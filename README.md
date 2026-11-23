@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mayada Shaaban — Portfolio
 
-## Getting Started
+A colourful, scrapbook-flavoured single-page portfolio built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS v4**, **Motion** and **Lucide** icons.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm start        # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For production, set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.com`) so Open Graph, the sitemap and canonical URLs are absolute.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Editing content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**All text lives in one file: `src/data/portfolio.ts`.** Components only render that data.
 
-## Learn More
+| What | Where in `portfolio.ts` |
+| --- | --- |
+| Name, headline, intro, email, GitHub, LinkedIn | `profile` |
+| "The developer side" paragraphs + values | `developerSide`, `developerValues` |
+| Scrapbook photos & captions | `hobbies` |
+| Skills (cards in the Skills section + the marquee) | `skillGroups` |
+| Jobs on the timeline | `experience` (the first 3 highlights show, the rest sit behind "Show more") |
+| Project cards | `projects` (`mockup` picks the illustrated preview, `size` is `wide` / `tall` / `normal`) |
+| Degree, ICPC and other achievements | `education`, `achievements` |
+| Photo credits shown in the footer | `photoCredits` |
 
-To learn more about Next.js, take a look at the following resources:
+## Replacing images
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All images are in `public/images/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+public/images/portrait-mayada.jpg        ← your photo (hero)
+public/images/hobbies/my-cat.jpg         ← your photo
+public/images/hobbies/my-aerial-hoop.jpg ← your photo
+public/images/hobbies/my-cat-keyboard.jpg ← your photo
+public/images/hobbies/my-kitten.jpg       ← your photo
+public/images/hobbies/my-violin.jpg       ← your photo
+```
 
-## Deploy on Vercel
+To swap any of them:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Drop your photo into `public/images/hobbies/` under a new file name.
+2. Update the matching `image` entry in `hobbies`: `src`, `alt`, and the real `width`/`height`.
+3. If you ever use someone else's photo, add a credit to `photoCredits` and it shows in the footer.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Your portrait:** the oval photo in the hero is `profile.photo` (4:5 works best). Setting `profile.portrait` instead makes a photo fill the whole arch frame.
+
+**Tip:** when you swap a photo, give the file a new name (and update `src`). Next.js and browsers cache images by URL, so reusing a name can keep showing the old picture.
+
+## Updating the CV
+
+Replace `public/cv/Mayada-Shaaban-CV.pdf` with the new PDF, keeping the same name, or change `profile.cvPath`.
+
+## Theme
+
+Colours are CSS variables at the top of `src/app/globals.css` (`--cream`, `--ink`, `--purple`, `--coral`, `--butter`, `--mint`, `--pink`, `--lavender`, `--sky`…). Change them there and the whole site updates. Fonts (Fraunces, Instrument Sans, Caveat) are set in `src/app/layout.tsx`.
+
+## Structure
+
+```
+src/
+  app/            layout (fonts, SEO metadata, JSON-LD), page, globals.css, icon, robots, sitemap
+  data/           portfolio.ts ← all content
+  components/
+    layout/       Navbar, Footer, BackToTop, CursorFollower, Providers
+    sections/     Hero, Marquee, About, Skills, Experience, Projects, Education, Contact
+    mockups/      illustrated (CSS) project previews: not real screenshots
+    illustrations/ WatchingCat, EasterEggs, doodle SVGs
+    ui/           Reveal, SectionHeading, Polaroid, Tag, BrandIcons
+  lib/            accent colour maps, active-section hook
+```
+
+## Little extras
+
+- The hero cat's eyes follow your cursor. Click to pet it, and pet it 5 times for a surprise.
+- Type `meow` anywhere on the page.
+- Check the browser console.
+- All motion respects the OS "reduce motion" setting.

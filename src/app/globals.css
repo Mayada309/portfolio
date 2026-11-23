@@ -1,26 +1,178 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Colour system — edit these to re-theme the whole site.
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #fff7ec;
+  --paper: #fffdf8;
+  --ink: #2b2042;          /* deep plum used instead of black */
+  --ink-soft: #5f5578;
+  --line: #e9dcc8;
+
+  --lavender: #cdbdff;
+  --lavender-soft: #ece5ff;
+  --purple: #6c4cf1;
+  --purple-deep: #4b2fc4;
+  --coral: #ff8466;
+  --coral-soft: #ffe1d7;
+  --butter: #ffdf7e;
+  --butter-soft: #fff3c9;
+  --mint: #9fe3c6;
+  --mint-soft: #dcf7ea;
+  --pink: #ffb2d0;
+  --pink-soft: #ffe4ef;
+  --sky: #a9dcff;
+
+  --pop: 4px 4px 0 0 var(--ink);
+  --pop-lg: 7px 7px 0 0 var(--ink);
+  --radius-blob: 42% 58% 63% 37% / 41% 44% 56% 59%;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-lavender: var(--lavender);
+  --color-lavender-soft: var(--lavender-soft);
+  --color-purple: var(--purple);
+  --color-purple-deep: var(--purple-deep);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-butter: var(--butter);
+  --color-butter-soft: var(--butter-soft);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-sky: var(--sky);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-instrument);
+  --font-hand: var(--font-caveat);
+
+  --shadow-pop: var(--pop);
+  --shadow-pop-lg: var(--pop-lg);
+
+  --breakpoint-xs: 25rem;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-spin-slow: spin 18s linear infinite;
+  --animate-wiggle: wiggle 0.5s ease-in-out;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-12px) rotate(calc(var(--r, 0deg) + 4deg)); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-6deg); }
+  75% { transform: rotate(6deg); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@keyframes tail {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(14deg); }
+}
+@keyframes paw-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(260deg); opacity: 0.9; }
+}
+
+html {
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+/* Paper grain texture — very subtle, sits above backgrounds but below content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .35 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--butter);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Dotted grid used behind some sections */
+.bg-dots {
+  background-image: radial-gradient(color-mix(in oklab, var(--ink) 16%, transparent) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* Lined notebook paper */
+.bg-lined {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(90deg, transparent 2.6rem, color-mix(in oklab, var(--coral) 55%, transparent) 2.6rem, color-mix(in oklab, var(--coral) 55%, transparent) calc(2.6rem + 1.5px), transparent calc(2.6rem + 1.5px)),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(2rem - 1px), color-mix(in oklab, var(--sky) 70%, transparent) calc(2rem - 1px), color-mix(in oklab, var(--sky) 70%, transparent) 2rem);
+}
+
+/* Hand-drawn style highlighter */
+.mark {
+  background: linear-gradient(104deg, transparent 0.4em, var(--hl, var(--butter)) 0.5em, var(--hl, var(--butter)) calc(100% - 0.4em), transparent calc(100% - 0.3em));
+  background-size: 100% 0.55em;
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+  padding: 0 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Washi tape strip */
+.tape {
+  position: absolute;
+  width: 92px;
+  height: 26px;
+  background: color-mix(in oklab, var(--tape, var(--butter)) 80%, transparent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  clip-path: polygon(0 0, 4% 15%, 0 30%, 4% 45%, 0 60%, 4% 75%, 0 90%, 2% 100%, 98% 100%, 100% 85%, 96% 70%, 100% 55%, 96% 40%, 100% 25%, 96% 10%, 100% 0);
+  z-index: 2;
+}
+
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
