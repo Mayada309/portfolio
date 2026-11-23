@@ -3,21 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/accent";
+import { usePurr } from "@/lib/usePurr";
 
-const MEOWS = ["mrrp?", "meow!", "purrr…", "pet me again", "*slow blink*", "ok, that's enough", "…fine, one more"];
+/** One message per pet; the 5th pet sets off the paw rain. */
+const PURRS = ["prrr…", "purrrr…", "purrrrrr~", "PURRRRRR", "✨ maximum purr ✨"];
+const PETS_FOR_RAIN = PURRS.length;
+/** Paw rain lasts ~5s; the purr keeps going while paws fall, then fades as they land. */
+const RAIN_PURR_MS = 3800;
+const IDLE_STOP_MS = 4500;
 
 export const PAW_RAIN_EVENT = "portfolio:paw-rain";
 
 /**
- * An illustrated cat whose pupils follow the pointer. Click (or press Enter) to pet it.
- * Five pets triggers a little paw-print shower.
+ * An illustrated cat whose pupils follow the pointer. Click (or press Enter) to pet it:
+ * it purrs (louder with every pet) until the fifth pet sends paw prints falling down the screen.
  */
 export function WatchingCat({ className }: { className?: string }) {
   const ref = useRef<SVGSVGElement>(null);
   const [pupil, setPupil] = useState({ x: 0, y: 0 });
   const [pets, setPets] = useState(0);
   const [bubble, setBubble] = useState<string | null>(null);
+  const [purring, setPurring] = useState(false);
   const bubbleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const purrTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const { purr, stop } = usePurr();
 
   useEffect(() => {
     let frame = 0;
@@ -43,18 +52,41 @@ export function WatchingCat({ className }: { className?: string }) {
     };
   }, []);
 
-  useEffect(() => () => clearTimeout(bubbleTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(bubbleTimer.current);
+      clearTimeout(purrTimer.current);
+    },
+    [],
+  );
+
+  const endPurr = (fade: number) => {
+    stop(fade);
+    setPurring(false);
+  };
 
   const pet = () => {
     const next = pets + 1;
+    const step = ((next - 1) % PETS_FOR_RAIN) + 1; // 1..5
     setPets(next);
-    setBubble(MEOWS[(next - 1) % MEOWS.length]);
+    setBubble(PURRS[step - 1]);
     clearTimeout(bubbleTimer.current);
-    bubbleTimer.current = setTimeout(() => setBubble(null), 1800);
-    if (next % 5 === 0) window.dispatchEvent(new Event(PAW_RAIN_EVENT));
+    clearTimeout(purrTimer.current);
+
+    purr(step);
+    setPurring(true);
+
+    if (step === PETS_FOR_RAIN) {
+      window.dispatchEvent(new Event(PAW_RAIN_EVENT));
+      bubbleTimer.current = setTimeout(() => setBubble(null), RAIN_PURR_MS);
+      purrTimer.current = setTimeout(() => endPurr(1.4), RAIN_PURR_MS);
+    } else {
+      bubbleTimer.current = setTimeout(() => setBubble(null), 1800);
+      purrTimer.current = setTimeout(() => endPurr(1.2), IDLE_STOP_MS);
+    }
   };
 
-  const happy = bubble !== null;
+  const happy = purring || bubble !== null;
 
   return (
     <div className={cn("relative", className)}>
@@ -75,10 +107,16 @@ export function WatchingCat({ className }: { className?: string }) {
       <button
         type="button"
         onClick={pet}
-        aria-label="Pet the cat"
+        aria-label="Pet the cat (it purrs)"
         className="group block w-full cursor-pointer rounded-3xl"
       >
-        <svg ref={ref} viewBox="0 0 200 200" className="w-full overflow-visible" aria-hidden="true">
+        <svg
+          ref={ref}
+          viewBox="0 0 200 200"
+          className="w-full overflow-visible"
+          style={purring ? { animation: "purr-shake 90ms linear infinite" } : undefined}
+          aria-hidden="true"
+        >
           {/* tail */}
           <g style={{ transformOrigin: "140px 176px", animation: "tail 2.6s ease-in-out infinite" }}>
             <path
@@ -159,7 +197,7 @@ export function WatchingCat({ className }: { className?: string }) {
           <circle cx="100" cy="134" r="6" fill="var(--butter)" stroke="var(--ink)" strokeWidth="2.5" />
         </svg>
       </button>
-      <style>{`@keyframes blink-eyes{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}`}</style>
+      <style>{`@keyframes blink-eyes{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}@keyframes purr-shake{0%,100%{transform:translate(0,0)}25%{transform:translate(.6px,-.4px)}50%{transform:translate(-.5px,.5px)}75%{transform:translate(.4px,.3px)}}`}</style>
     </div>
   );
 }

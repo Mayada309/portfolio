@@ -77,7 +77,7 @@ src/
 
 ## Little extras
 
-- The hero cat's eyes follow your cursor. Click to pet it, and pet it 5 times for a surprise.
+- The hero cat's eyes follow your cursor. Click to pet it: it purrs (a sound synthesized with the Web Audio API, louder with every pet) until the 5th pet sends paw prints falling down the screen.
 - Type `meow` anywhere on the page.
 - Check the browser console.
 - All motion respects the OS "reduce motion" setting.

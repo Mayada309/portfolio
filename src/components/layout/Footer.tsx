@@ -1,16 +1,10 @@
-import { cacheLife } from "next/cache";
 import { photoCredits, profile } from "@/data/portfolio";
 import { Paw } from "@/components/illustrations/Doodles";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 
-/** Cached so the static shell can include the year; refreshed daily. */
-async function CopyrightYear() {
-  "use cache";
-  cacheLife("days");
-  return <>{new Date().getFullYear()}</>;
-}
-
 export function Footer() {
+  // The page is pre-rendered at build time, so this is the year of the last deploy.
+  const year = new Date().getFullYear();
   return (
     <footer className="relative z-[2] px-5 pb-28 pt-4 sm:px-8 sm:pb-12">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 border-t-2 border-dashed border-ink/30 pt-8 md:flex-row md:items-start md:justify-between">
@@ -44,7 +38,7 @@ export function Footer() {
             </a>
           </div>
           <p className="text-sm text-ink-soft">
-            © <CopyrightYear /> {profile.name}. Psst, try typing <kbd className="rounded border border-ink/40 bg-paper px-1 font-mono text-xs">meow</kbd>.
+            © {year} {profile.name}. Psst, try typing <kbd className="rounded border border-ink/40 bg-paper px-1 font-mono text-xs">meow</kbd>.
           </p>
           {photoCredits.length > 0 ? (
           <details className="text-sm text-ink-soft md:text-right">
