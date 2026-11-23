@@ -34,7 +34,7 @@ export function Education() {
                 <span className="mb-6 grid size-14 place-items-center rounded-2xl border-2 border-ink bg-lavender">
                   <GraduationCap className="size-7" aria-hidden="true" />
                 </span>
-                <p className="font-hand text-2xl text-coral">Bachelor&apos;s degree</p>
+                <p className="font-hand text-2xl text-coral-text">Bachelor&apos;s degree</p>
                 <h3 className="mt-1 max-w-[18ch] font-display text-[clamp(1.9rem,4.5vw,2.9rem)] font-semibold leading-[1.02] tracking-tight text-balance">
                   {education.degree}
                 </h3>

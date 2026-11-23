@@ -93,7 +93,7 @@ export function Projects() {
           eyebrow="selected work"
           title={
             <>
-              Things I&apos;ve <em className="text-coral">helped build</em>
+              Things I&apos;ve <em className="text-coral-display">helped build</em>
             </>
           }
           intro={

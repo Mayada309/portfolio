@@ -62,7 +62,7 @@ export function About() {
                   <Heart className="size-5 text-paper" />
                 </span>
                 The human side
-                <span className="font-hand text-2xl font-normal text-coral">(the fun part)</span>
+                <span className="font-hand text-2xl font-normal text-coral-text">(the fun part)</span>
               </h3>
             </Reveal>
 

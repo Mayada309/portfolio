@@ -64,7 +64,7 @@ function PortraitPlaceholder() {
         <p className="font-mono text-[0.6rem] leading-relaxed sm:text-[0.68rem]">
           <span className="text-purple">const</span> me = {"{"}
           <br />
-          &nbsp;&nbsp;loves: <span className="text-coral">&quot;🐈 🎻&quot;</span>
+          &nbsp;&nbsp;loves: <span className="text-coral-text">&quot;🐈 🎻&quot;</span>
           <br />
           {"}"}
           <span className="ml-0.5 inline-block h-3 w-1.5 translate-y-0.5 animate-blink bg-ink" />
@@ -108,7 +108,7 @@ export function Hero() {
             </motion.span>
             <motion.span
               {...slide(0.16)}
-              className="relative inline-block text-[clamp(3.6rem,13vw,8.5rem)] italic text-coral"
+              className="relative inline-block text-[clamp(3.6rem,13vw,8.5rem)] italic text-coral-display"
             >
               Shaaban
               <Underline className="absolute -bottom-2 left-0 h-4 w-full text-butter sm:-bottom-3 sm:h-5" />

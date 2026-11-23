@@ -16,6 +16,9 @@
   --purple-deep: #4b2fc4;
   --coral: #ff8466;
   --coral-soft: #ffe1d7;
+  /* Deeper corals for TEXT (WCAG AA): display ≥3:1 for large headings, text ≥4.5:1 for body/hand text */
+  --coral-display: #d64f2a;
+  --coral-text: #b93f24;
   --butter: #ffdf7e;
   --butter-soft: #fff3c9;
   --mint: #9fe3c6;
@@ -41,6 +44,8 @@
   --color-purple-deep: var(--purple-deep);
   --color-coral: var(--coral);
   --color-coral-soft: var(--coral-soft);
+  --color-coral-display: var(--coral-display);
+  --color-coral-text: var(--coral-text);
   --color-butter: var(--butter);
   --color-butter-soft: var(--butter-soft);
   --color-mint: var(--mint);

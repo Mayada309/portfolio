@@ -1,0 +1,15 @@
+# Cloudflare static-asset cache rules (applied by Workers Static Assets)
+
+# Hashed build output never changes for a given URL: cache for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photos (rename the file when you swap a photo, see README).
+/images/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/icon.svg
+  Cache-Control: public, max-age=604800
+
+/cv/*
+  Cache-Control: public, max-age=86400

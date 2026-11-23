@@ -60,7 +60,7 @@ export function Navbar() {
         >
           <Paw className="size-7 text-pink transition-transform duration-300 group-hover:-rotate-12" />
           <span>
-            mayada<span className="text-coral">.</span>
+            mayada<span className="text-coral-text">.</span>
           </span>
         </a>
 

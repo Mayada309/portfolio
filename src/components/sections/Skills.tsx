@@ -40,7 +40,7 @@ export function Skills() {
           eyebrow="my toolbox"
           title={
             <>
-              Skills &amp; <em className="text-coral">technologies</em>
+              Skills &amp; <em className="text-coral-display">technologies</em>
             </>
           }
           intro="The tools I reach for, grouped by the kind of problem they solve. Hover around, they like the attention."
