@@ -49,9 +49,9 @@ export const profile: Profile = {
 };
 
 export const navItems = [
-  { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
+  { id: "about", label: "About" },
   { id: "projects", label: "Work" },
   { id: "education", label: "Education" },
   { id: "contact", label: "Contact" },
@@ -176,7 +176,7 @@ export const skillGroups: SkillGroup[] = [
     blurb: "My home base.",
     icon: "frontend",
     accent: "lavender",
-    skills: ["React.js", "Next.js", "React Native", "TypeScript", "JavaScript", "Tailwind CSS", "HTML", "CSS"],
+    skills: ["React.js", "Next.js", "Angular", "React Native", "TypeScript", "JavaScript", "Tailwind CSS", "HTML", "CSS"],
     note: "Bilingual by default: Arabic + English interfaces with full RTL support (next-intl).",
   },
   {

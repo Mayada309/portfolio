@@ -23,9 +23,9 @@ export default function Home() {
       <main id="main" className="relative z-[2]">
         <Hero />
         <Marquee />
-        <About />
         <Skills />
         <Experience />
+        <About />
         <Projects />
         <Education />
         <Contact />

@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useMotionValue, useSpring } from "motion/react";
+import * as m from "motion/react-m";
 
 /**
- * A soft ring that trails the (still visible) native cursor and grows over
- * interactive elements. Desktop / fine pointers only, off with reduced motion.
+ * Custom cursor: a precise dot plus a soft ring that trails it and grows over
+ * interactive elements. Replaces the native cursor (hidden via the
+ * `custom-cursor` class) on desktop / fine pointers only; off with reduced
+ * motion, where the native cursor stays.
  */
 export function CursorFollower() {
   const [enabled, setEnabled] = useState(false);
@@ -23,6 +26,13 @@ export function CursorFollower() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const root = document.documentElement;
+    root.classList.add("custom-cursor");
+    return () => root.classList.remove("custom-cursor");
+  }, [enabled]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -45,17 +55,26 @@ export function CursorFollower() {
   if (!enabled) return null;
 
   return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[70] rounded-full border-2 border-purple mix-blend-multiply"
-      style={{ x: sx, y: sy, translateX: "-50%", translateY: "-50%" }}
-      animate={{
-        width: hovering ? 54 : 26,
-        height: hovering ? 54 : 26,
-        backgroundColor: hovering ? "rgba(255, 223, 126, 0.55)" : "rgba(205, 189, 255, 0)",
-        opacity: hidden ? 0 : 1,
-      }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-    />
+    <>
+      <m.div
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[70] rounded-full border-2 border-purple mix-blend-multiply"
+        style={{ x: sx, y: sy, translateX: "-50%", translateY: "-50%" }}
+        animate={{
+          width: hovering ? 54 : 26,
+          height: hovering ? 54 : 26,
+          backgroundColor: hovering ? "rgba(255, 223, 126, 0.55)" : "rgba(205, 189, 255, 0)",
+          opacity: hidden ? 0 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      />
+      <m.div
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[71] size-1.5 rounded-full bg-ink"
+        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
+        animate={{ opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.15 }}
+      />
+    </>
   );
 }

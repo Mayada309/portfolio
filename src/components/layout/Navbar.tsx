@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { navItems, profile } from "@/data/portfolio";
 import { useActiveSection } from "@/lib/useActiveSection";
@@ -78,7 +79,7 @@ export function Navbar() {
                   )}
                 >
                   {isActive ? (
-                    <motion.span
+                    <m.span
                       layoutId="nav-pill"
                       className="absolute inset-0 -z-10 rounded-full border-[1.5px] border-ink bg-butter"
                       transition={{ type: "spring", stiffness: 420, damping: 34 }}
@@ -114,7 +115,7 @@ export function Navbar() {
 
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <m.div
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
@@ -127,7 +128,7 @@ export function Navbar() {
           >
             <ul className="grid gap-2 sm:grid-cols-2">
               {navItems.map((item, i) => (
-                <motion.li
+                <m.li
                   key={item.id}
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -146,7 +147,7 @@ export function Navbar() {
                     {item.label}
                     {active === item.id ? <Paw className="size-6 text-paper" /> : null}
                   </a>
-                </motion.li>
+                </m.li>
               ))}
             </ul>
             <a
@@ -156,7 +157,7 @@ export function Navbar() {
             >
               Let&apos;s talk <ArrowUpRight className="size-4" aria-hidden="true" />
             </a>
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </header>

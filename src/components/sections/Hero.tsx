@@ -1,24 +1,8 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "motion/react";
 import { ArrowDown, Download } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { WatchingCat } from "@/components/illustrations/WatchingCat";
 import { Blob, MusicNote, Sparkle, Underline, Heart } from "@/components/illustrations/Doodles";
-
-const ease = [0.22, 1, 0.36, 1] as const;
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay, ease },
-});
-/** Slide-only variant for the largest hero text: it stays visible from the first paint, which keeps LCP fast. */
-const slide = (delay: number) => ({
-  initial: { y: 30 },
-  animate: { y: 0 },
-  transition: { duration: 0.8, delay, ease },
-});
 
 function SpinningBadge() {
   const text = "FRONTEND DEV ✦ CAT PERSON ✦ VIOLINIST ✦ ";
@@ -90,44 +74,37 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-8">
         {/* Copy */}
         <div className="lg:col-span-7">
-          <motion.p {...rise(0)} className="mb-3 font-hand text-[1.7rem] leading-none text-purple sm:text-3xl">
+          <p className="hero-rise mb-3 font-hand text-[1.7rem] leading-none text-purple sm:text-3xl">
             Hi there, I&apos;m{" "}
-            <motion.span
-              className="inline-block origin-[70%_70%]"
-              animate={{ rotate: [0, 18, -8, 18, 0] }}
-              transition={{ duration: 1.6, delay: 1, repeat: Infinity, repeatDelay: 4 }}
-              aria-hidden="true"
-            >
+            <span className="hero-wave inline-block origin-[70%_70%]" aria-hidden="true">
               👋
-            </motion.span>
-          </motion.p>
+            </span>
+          </p>
 
           <h1 id="hero-title" className="font-display font-semibold leading-[0.88] tracking-[-0.045em]">
-            <motion.span {...slide(0.08)} className="block text-[clamp(3.6rem,13vw,8.5rem)]">
+            <span className="hero-slide block [--d:0.08s] text-[clamp(3.6rem,13vw,8.5rem)]">
               Mayada
-            </motion.span>
-            <motion.span
-              {...slide(0.16)}
-              className="relative inline-block text-[clamp(3.6rem,13vw,8.5rem)] italic text-coral-display"
+            </span>
+            <span
+              className="hero-slide relative inline-block [--d:0.16s] font-display-italic text-[clamp(3.6rem,13vw,8.5rem)] italic text-coral-display"
             >
               Shaaban
               <Underline className="absolute -bottom-2 left-0 h-4 w-full text-butter sm:-bottom-3 sm:h-5" />
-            </motion.span>
+            </span>
           </h1>
 
-          <motion.p
-            {...rise(0.26)}
-            className="mt-8 max-w-xl font-display text-[clamp(1.35rem,3.2vw,2rem)] font-medium leading-tight tracking-tight text-balance"
+          <p
+            className="hero-rise mt-8 [--d:0.26s] max-w-xl font-display text-[clamp(1.35rem,3.2vw,2rem)] font-medium leading-tight tracking-tight text-balance"
           >
             Frontend Developer <span className="font-hand text-[1.2em] text-purple">&amp;</span>{" "}
             <span className="mark [--hl:var(--mint)]">Creative Problem Solver</span>
-          </motion.p>
+          </p>
 
-          <motion.p {...slide(0.34)} className="mt-5 max-w-xl text-[1.06rem] leading-relaxed text-ink-soft text-pretty sm:text-lg">
+          <p className="hero-slide mt-5 [--d:0.34s] max-w-xl text-[1.06rem] leading-relaxed text-ink-soft text-pretty sm:text-lg">
             {profile.intro}
-          </motion.p>
+          </p>
 
-          <motion.div {...rise(0.42)} className="mt-9 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+          <div className="hero-rise mt-9 [--d:0.42s] flex flex-col gap-3 xs:flex-row xs:flex-wrap">
             <a
               href="#projects"
               className="group inline-flex min-h-13 items-center justify-center gap-2 rounded-full border-2 border-ink bg-purple px-7 py-3.5 font-bold text-white shadow-pop transition-all hover:-translate-y-0.5 hover:shadow-pop-lg active:translate-y-0 active:shadow-none"
@@ -143,14 +120,13 @@ export function Hero() {
               <Download className="size-4 transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />
               Download CV
             </a>
-          </motion.div>
+          </div>
 
-          <motion.a
-            {...rise(0.5)}
+          <a
             href={profile.currently.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex max-w-full items-center gap-2.5 rounded-3xl border-[1.5px] border-dashed border-ink/50 px-4 py-2 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+            className="hero-rise mt-8 inline-flex max-w-full [--d:0.5s] items-center gap-2.5 rounded-3xl border-[1.5px] border-dashed border-ink/50 px-4 py-2 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
           >
             <span className="relative flex size-2.5 shrink-0">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-80" />
@@ -160,15 +136,12 @@ export function Hero() {
               Currently {profile.currently.role} at{" "}
               <strong className="whitespace-nowrap text-ink">{profile.currently.company}</strong>
             </span>
-          </motion.a>
+          </a>
         </div>
 
         {/* Portrait composition */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92, rotate: 4 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease }}
-          className="relative mx-auto w-full max-w-[22rem] sm:max-w-[25rem] lg:col-span-5 lg:max-w-none"
+        <div
+          className="hero-pop relative mx-auto w-full max-w-[22rem] sm:max-w-[25rem] lg:col-span-5 lg:max-w-none"
         >
           <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] border-[3px] border-ink bg-lavender-soft shadow-pop-lg">
             {profile.portrait ? (
@@ -208,7 +181,7 @@ export function Hero() {
           />
           <Sparkle className="absolute right-[18%] -bottom-6 size-10 animate-float text-butter [--r:0deg]" />
           <Sparkle className="absolute left-[12%] -top-5 size-7 animate-float-slow text-coral" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

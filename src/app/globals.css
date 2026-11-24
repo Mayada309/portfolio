@@ -55,6 +55,7 @@
   --color-sky: var(--sky);
 
   --font-display: var(--font-fraunces);
+  --font-display-italic: var(--font-fraunces-italic), var(--font-fraunces);
   --font-sans: var(--font-instrument);
   --font-hand: var(--font-caveat);
 
@@ -91,6 +92,32 @@
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(14deg); }
 }
+/*
+ * Hero entrance + wave: plain CSS so the hero shows (and animates) without
+ * waiting for JavaScript, and runs on the compositor with no layout work.
+ * Delay per element comes from --d.
+ */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(30px); }
+}
+@keyframes hero-slide {
+  from { transform: translateY(30px); }
+}
+@keyframes hero-pop {
+  from { opacity: 0; transform: scale(0.92) rotate(4deg); }
+}
+/* 1.6s wave, then a 4s pause (5.6s cycle) */
+@keyframes hero-wave {
+  0%, 28.6%, 100% { transform: rotate(0deg); }
+  7.1% { transform: rotate(18deg); }
+  14.3% { transform: rotate(-8deg); }
+  21.4% { transform: rotate(18deg); }
+}
+.hero-rise { animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both; }
+.hero-slide { animation: hero-slide 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both; }
+.hero-pop { animation: hero-pop 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+.hero-wave { animation: hero-wave 5.6s ease-in-out 1s infinite; }
+
 @keyframes paw-fall {
   0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
   10% { opacity: 1; }
@@ -122,6 +149,12 @@ body::before {
   opacity: 0.32;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .35 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Native cursor hidden while the custom CursorFollower is active */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
 }
 
 ::selection {
@@ -180,4 +213,6 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+  .hero-rise, .hero-slide, .hero-pop { animation-delay: 0s !important; }
+  .hero-wave { animation: none !important; }
 }

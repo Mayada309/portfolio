@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 
 type RevealProps = HTMLMotionProps<"div"> & {
   delay?: number;
@@ -10,7 +11,7 @@ type RevealProps = HTMLMotionProps<"div"> & {
 /** Fades + lifts its children into view once. Reduced motion is handled by <MotionConfig reducedMotion="user">. */
 export function Reveal({ delay = 0, y = 28, children, ...rest }: RevealProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -12% 0px" }}
@@ -18,6 +19,6 @@ export function Reveal({ delay = 0, y = 28, children, ...rest }: RevealProps) {
       {...rest}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

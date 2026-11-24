@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
+import { AnimatePresence, useScroll, useSpring } from "motion/react";
+import * as m from "motion/react-m";
 import { ArrowUp } from "lucide-react";
 
 /** Floating back-to-top button with a scroll-progress ring. */
@@ -21,7 +22,7 @@ export function BackToTop() {
   return (
     <AnimatePresence>
       {visible ? (
-        <motion.button
+        <m.button
           type="button"
           onClick={toTop}
           aria-label="Back to top"
@@ -33,7 +34,7 @@ export function BackToTop() {
           className="fixed bottom-4 right-4 z-40 grid size-14 place-items-center rounded-full border-2 border-ink bg-butter shadow-pop sm:bottom-6 sm:right-6"
         >
           <svg viewBox="0 0 56 56" className="absolute inset-0 size-full -rotate-90" aria-hidden="true">
-            <motion.circle
+            <m.circle
               cx="28"
               cy="28"
               r="24"
@@ -45,7 +46,7 @@ export function BackToTop() {
             />
           </svg>
           <ArrowUp className="size-5" aria-hidden="true" />
-        </motion.button>
+        </m.button>
       ) : null}
     </AnimatePresence>
   );

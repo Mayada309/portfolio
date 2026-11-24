@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { ArrowUpRight, Briefcase, CalendarDays, ChevronDown, GraduationCap, MapPin } from "lucide-react";
 import { education, experience, type Role } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -95,7 +96,7 @@ function RoleCard({ role, index }: { role: Role; index: number }) {
               <AnimatePresence initial={false}>
                 {open
                   ? rest.map((h, i) => (
-                      <motion.li
+                      <m.li
                         key={h}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -104,7 +105,7 @@ function RoleCard({ role, index }: { role: Role; index: number }) {
                         className="overflow-hidden"
                       >
                         <HighlightBody text={h} accent={accentVar[role.accent]} />
-                      </motion.li>
+                      </m.li>
                     ))
                   : null}
               </AnimatePresence>
@@ -156,7 +157,7 @@ export function Experience() {
       <div className="mx-auto max-w-4xl">
         <SectionHeading
           id="experience-title"
-          index="03"
+          index="02"
           eyebrow="where I've been building"
           title={
             <>

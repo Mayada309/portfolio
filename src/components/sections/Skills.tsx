@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import { Box, Braces, FileText, LayoutTemplate, Wrench, type LucideIcon } from "lucide-react";
 import { skillGroups, type SkillIcon } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -36,7 +36,7 @@ export function Skills() {
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading
           id="skills-title"
-          index="02"
+          index="01"
           eyebrow="my toolbox"
           title={
             <>
@@ -51,7 +51,7 @@ export function Skills() {
             const Icon = ICONS[group.icon];
             const big = group.id === "frontend";
             return (
-              <motion.article
+              <m.article
                 key={group.id}
                 initial={{ opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export function Skills() {
 
                 <ul className={cn("relative flex flex-wrap gap-2.5", big && "lg:gap-3")} aria-label={`${group.title} skills`}>
                   {group.skills.map((skill, i) => (
-                    <motion.li
+                    <m.li
                       key={skill}
                       whileHover={{ rotate: TILTS[i % TILTS.length], y: -4, scale: 1.06 }}
                       transition={{ type: "spring", stiffness: 400, damping: 14 }}
@@ -96,7 +96,7 @@ export function Skills() {
                       )}
                     >
                       {skill}
-                    </motion.li>
+                    </m.li>
                   ))}
                 </ul>
                 {group.note ? (
@@ -104,7 +104,7 @@ export function Skills() {
                     ↳ {group.note}
                   </p>
                 ) : null}
-              </motion.article>
+              </m.article>
             );
           })}
         </div>

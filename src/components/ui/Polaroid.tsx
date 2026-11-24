@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import type { Hobby } from "@/data/portfolio";
 import { accentVar, cn } from "@/lib/accent";
 
@@ -16,7 +16,7 @@ interface PolaroidProps {
 
 export function Polaroid({ hobby, aspect, rotate, sizes, className, delay = 0 }: PolaroidProps) {
   return (
-    <motion.figure
+    <m.figure
       initial={{ opacity: 0, y: 40, rotate: rotate * 2 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, margin: "0px 0px -10% 0px" }}
@@ -36,6 +36,6 @@ export function Polaroid({ hobby, aspect, rotate, sizes, className, delay = 0 }:
         <span className="block font-display text-base font-semibold leading-tight sm:text-lg">{hobby.title}</span>
         <span className="block font-hand text-lg leading-tight text-ink-soft sm:text-xl">{hobby.caption}</span>
       </figcaption>
-    </motion.figure>
+    </m.figure>
   );
 }

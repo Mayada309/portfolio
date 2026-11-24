@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { cn } from "@/lib/accent";
 import { usePurr } from "@/lib/usePurr";
 
@@ -92,7 +93,7 @@ export function WatchingCat({ className }: { className?: string }) {
     <div className={cn("relative", className)}>
       <AnimatePresence>
         {bubble ? (
-          <motion.span
+          <m.span
             key={bubble + pets}
             role="status"
             initial={{ opacity: 0, y: 8, scale: 0.8 }}
@@ -101,7 +102,7 @@ export function WatchingCat({ className }: { className?: string }) {
             className="absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl border-2 border-ink bg-paper px-3 py-1 font-hand text-xl leading-none shadow-pop"
           >
             {bubble}
-          </motion.span>
+          </m.span>
         ) : null}
       </AnimatePresence>
       <button
@@ -110,15 +111,21 @@ export function WatchingCat({ className }: { className?: string }) {
         aria-label="Pet the cat (it purrs)"
         className="group block w-full cursor-pointer rounded-3xl"
       >
-        <svg
-          ref={ref}
-          viewBox="0 0 200 200"
-          className="w-full overflow-visible"
+        {/*
+          The tail and the blinking eyes live in their own overlay <svg> layers so
+          their looping animations transform a whole layer (GPU-composited) instead
+          of elements inside one SVG, which would force a re-layout every frame.
+        */}
+        <span
+          className="relative block"
           style={purring ? { animation: "purr-shake 90ms linear infinite" } : undefined}
-          aria-hidden="true"
         >
-          {/* tail */}
-          <g style={{ transformOrigin: "140px 176px", animation: "tail 2.6s ease-in-out infinite" }}>
+          <svg
+            viewBox="0 0 200 200"
+            className="absolute inset-0 size-full overflow-visible"
+            style={{ transformOrigin: "70% 88%", animation: "tail 2.6s ease-in-out infinite" }}
+            aria-hidden="true"
+          >
             <path
               d="M140 176c30 4 48-10 46-34-1-14-12-20-18-14"
               fill="none"
@@ -133,69 +140,77 @@ export function WatchingCat({ className }: { className?: string }) {
               strokeWidth="11"
               strokeLinecap="round"
             />
-          </g>
-          {/* body */}
-          <path
-            d="M60 196c-6-36 4-70 40-74 36 4 46 38 40 74Z"
-            fill="var(--lavender)"
-            stroke="var(--ink)"
-            strokeWidth="3.5"
-            strokeLinejoin="round"
-          />
-          <path d="M84 196c-2-22 4-40 16-42 12 2 18 20 16 42Z" fill="var(--paper)" opacity=".8" />
-          {/* paws */}
-          <ellipse cx="82" cy="194" rx="12" ry="7" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
-          <ellipse cx="118" cy="194" rx="12" ry="7" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
-          {/* ears */}
-          <g className="origin-[100px_80px] transition-transform duration-300 group-hover:-translate-y-1">
-            <path d="M54 66 50 20l40 26Z" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" strokeLinejoin="round" />
-            <path d="M146 66l4-46-40 26Z" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" strokeLinejoin="round" />
-            <path d="M58 52 56 32l18 13Z" fill="var(--pink)" />
-            <path d="M142 52l2-20-18 13Z" fill="var(--pink)" />
-          </g>
-          {/* head */}
-          <ellipse cx="100" cy="84" rx="54" ry="46" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" />
-          {/* forehead stripes */}
-          <path d="M92 44v10M100 41v13M108 44v10" stroke="var(--purple)" strokeWidth="3.5" strokeLinecap="round" />
-          {/* cheeks */}
-          <ellipse cx="66" cy="100" rx="9" ry="6" fill="var(--pink)" opacity=".85" />
-          <ellipse cx="134" cy="100" rx="9" ry="6" fill="var(--pink)" opacity=".85" />
-          {/* eyes */}
-          {happy ? (
-            <g fill="none" stroke="var(--ink)" strokeWidth="3.5" strokeLinecap="round">
-              <path d="M70 86c4-7 14-7 18 0" />
-              <path d="M112 86c4-7 14-7 18 0" />
+          </svg>
+          <svg ref={ref} viewBox="0 0 200 200" className="relative block w-full overflow-visible" aria-hidden="true">
+            {/* body */}
+            <path
+              d="M60 196c-6-36 4-70 40-74 36 4 46 38 40 74Z"
+              fill="var(--lavender)"
+              stroke="var(--ink)"
+              strokeWidth="3.5"
+              strokeLinejoin="round"
+            />
+            <path d="M84 196c-2-22 4-40 16-42 12 2 18 20 16 42Z" fill="var(--paper)" opacity=".8" />
+            {/* paws */}
+            <ellipse cx="82" cy="194" rx="12" ry="7" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+            <ellipse cx="118" cy="194" rx="12" ry="7" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+            {/* ears */}
+            <g className="origin-[100px_80px] transition-transform duration-300 group-hover:-translate-y-1">
+              <path d="M54 66 50 20l40 26Z" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" strokeLinejoin="round" />
+              <path d="M146 66l4-46-40 26Z" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" strokeLinejoin="round" />
+              <path d="M58 52 56 32l18 13Z" fill="var(--pink)" />
+              <path d="M142 52l2-20-18 13Z" fill="var(--pink)" />
             </g>
-          ) : (
-            <g style={{ transformOrigin: "100px 84px", animation: "blink-eyes 5s infinite" }}>
-              <ellipse cx="79" cy="84" rx="11" ry="12.5" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
-              <ellipse cx="121" cy="84" rx="11" ry="12.5" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
-              <g style={{ transform: `translate(${pupil.x}px, ${pupil.y}px)`, transition: "transform 120ms ease-out" }}>
-                <ellipse cx="79" cy="85" rx="5.5" ry="7.5" fill="var(--ink)" />
-                <ellipse cx="121" cy="85" rx="5.5" ry="7.5" fill="var(--ink)" />
-                <circle cx="81" cy="81" r="2" fill="var(--paper)" />
-                <circle cx="123" cy="81" r="2" fill="var(--paper)" />
+            {/* head */}
+            <ellipse cx="100" cy="84" rx="54" ry="46" fill="var(--lavender)" stroke="var(--ink)" strokeWidth="3.5" />
+            {/* forehead stripes */}
+            <path d="M92 44v10M100 41v13M108 44v10" stroke="var(--purple)" strokeWidth="3.5" strokeLinecap="round" />
+            {/* cheeks */}
+            <ellipse cx="66" cy="100" rx="9" ry="6" fill="var(--pink)" opacity=".85" />
+            <ellipse cx="134" cy="100" rx="9" ry="6" fill="var(--pink)" opacity=".85" />
+            {/* nose + mouth */}
+            <path d="M95 99h10l-5 6Z" fill="var(--coral)" stroke="var(--ink)" strokeWidth="2" strokeLinejoin="round" />
+            <path
+              d="M100 105c0 5-4 8-8 6M100 105c0 5 4 8 8 6"
+              fill="none"
+              stroke="var(--ink)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            {/* whiskers */}
+            <g stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" opacity=".75">
+              <path d="M58 96 30 90M58 103l-28 3" />
+              <path d="M142 96l28-6M142 103l28 3" />
+            </g>
+            {/* collar */}
+            <path d="M66 124c22 10 46 10 68 0" fill="none" stroke="var(--coral)" strokeWidth="7" strokeLinecap="round" />
+            <circle cx="100" cy="134" r="6" fill="var(--butter)" stroke="var(--ink)" strokeWidth="2.5" />
+          </svg>
+          <svg
+            viewBox="0 0 200 200"
+            className="absolute inset-0 size-full overflow-visible"
+            style={happy ? undefined : { transformOrigin: "50% 42%", animation: "blink-eyes 5s infinite" }}
+            aria-hidden="true"
+          >
+            {happy ? (
+              <g fill="none" stroke="var(--ink)" strokeWidth="3.5" strokeLinecap="round">
+                <path d="M70 86c4-7 14-7 18 0" />
+                <path d="M112 86c4-7 14-7 18 0" />
               </g>
-            </g>
-          )}
-          {/* nose + mouth */}
-          <path d="M95 99h10l-5 6Z" fill="var(--coral)" stroke="var(--ink)" strokeWidth="2" strokeLinejoin="round" />
-          <path
-            d="M100 105c0 5-4 8-8 6M100 105c0 5 4 8 8 6"
-            fill="none"
-            stroke="var(--ink)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          {/* whiskers */}
-          <g stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" opacity=".75">
-            <path d="M58 96 30 90M58 103l-28 3" />
-            <path d="M142 96l28-6M142 103l28 3" />
-          </g>
-          {/* collar */}
-          <path d="M66 124c22 10 46 10 68 0" fill="none" stroke="var(--coral)" strokeWidth="7" strokeLinecap="round" />
-          <circle cx="100" cy="134" r="6" fill="var(--butter)" stroke="var(--ink)" strokeWidth="2.5" />
-        </svg>
+            ) : (
+              <>
+                <ellipse cx="79" cy="84" rx="11" ry="12.5" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+                <ellipse cx="121" cy="84" rx="11" ry="12.5" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+                <g style={{ transform: `translate(${pupil.x}px, ${pupil.y}px)`, transition: "transform 120ms ease-out" }}>
+                  <ellipse cx="79" cy="85" rx="5.5" ry="7.5" fill="var(--ink)" />
+                  <ellipse cx="121" cy="85" rx="5.5" ry="7.5" fill="var(--ink)" />
+                  <circle cx="81" cy="81" r="2" fill="var(--paper)" />
+                  <circle cx="123" cy="81" r="2" fill="var(--paper)" />
+                </g>
+              </>
+            )}
+          </svg>
+        </span>
       </button>
       <style>{`@keyframes blink-eyes{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}@keyframes purr-shake{0%,100%{transform:translate(0,0)}25%{transform:translate(.6px,-.4px)}50%{transform:translate(-.5px,.5px)}75%{transform:translate(.4px,.3px)}}`}</style>
     </div>

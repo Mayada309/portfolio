@@ -13,7 +13,7 @@ export function About() {
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           id="about-title"
-          index="01"
+          index="03"
           eyebrow="a little more about me"
           title={
             <>

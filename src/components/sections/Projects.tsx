@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import { ArrowUpRight, Check, Download } from "lucide-react";
 import { profile, projects, type Project } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -17,7 +17,7 @@ const SIZE: Record<Project["size"], string> = {
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const tall = project.size === "tall";
   return (
-    <motion.article
+    <m.article
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
@@ -75,7 +75,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           ))}
         </ul>
       </div>
-    </motion.article>
+    </m.article>
   );
 }
 
@@ -111,7 +111,7 @@ export function Projects() {
           ))}
 
           {/* closing card */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -137,7 +137,7 @@ export function Projects() {
                 <Download className="size-4" aria-hidden="true" /> Grab my CV
               </a>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
